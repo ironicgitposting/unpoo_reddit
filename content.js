@@ -53,31 +53,61 @@ const blockedSubreddits = [
   "sipstea"
 ];
 
+
 function maskElement(el) {
+  if (el.classList.contains("masked-content")) return;
+
   el.classList.add("masked-content");
 
   const overlay = document.createElement("div");
   overlay.className = "masked-overlay";
   overlay.innerText = "Masked: user active in blocked subreddit";
-
   el.appendChild(overlay);
 }
 
 async function getUserSubreddits(username) {
-  const response = await fetch(`https://www.reddit.com/user/${username}/overview.json?limit=50`);
-  if (!response.ok) return [];
+  try {
+    const res = await fetch(`https://www.reddit.com/user/${username}/overview.json?limit=30`);
+    const json = await res.json();
 
-  const data = await response.json();
-  const subreddits = new Set();
+    const subs = json.data.children.map(i => i.data?.subreddit?.toLowerCase()).filter(Boolean);
+    return Array.from(new Set(subs));
+  } catch (e) {
+    console.warn("Reddit API error", e);
+    return [];
+  }
+}
 
-  for (const item of data.data.children) {
-    if (item.data.subreddit) {
-      subreddits.add(item.data.subreddit.toLowerCase());
+const seen = new Set();
+
+async function handleNewAuthors() {
+  const authorLinks = document.querySelectorAll("a[href^='/user/']");
+
+  for (const a of authorLinks) {
+    const username = a.href.split("/user/")[1].split("/")[0];
+    if (seen.has(username)) continue;
+
+    seen.add(username);
+
+    const container = a.closest("div[data-testid='comment'], div[data-testid='post-container']");
+    if (!container) continue;
+
+    const subs = await getUserSubreddits(username);
+    if (subs.some(sub => blockedSubreddits.includes(sub))) {
+      maskElement(container);
     }
   }
-
-  return Array.from(subreddits);
 }
+
+// Observe DOM for React-based Reddit
+const observer = new MutationObserver(() => {
+  handleNewAuthors();
+});
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
+});
 
 async function processAuthors() {
   const authors = document.querySelectorAll("a[href^='/user/']");
