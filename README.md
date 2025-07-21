@@ -58,3 +58,42 @@ This project is about **content hygiene**, not exclusion. Everyone has the right
 ### 🙏 Disclaimer
 
 This is a personal-use tool. It makes no judgment about the quality or value of any subreddit or user. It’s designed to help **you** regain control over your experience — nothing more, nothing less.
+
+
+🧩 For Chrome (Manual Install)
+
+    Prepare your files in a folder named (e.g.) reddit-masker/, including:
+
+reddit-masker/
+├── manifest.json
+├── content.js
+├── style.css
+└── icons/icon.png (optional)
+
+Open Chrome and go to:
+
+chrome://extensions/
+
+Enable Developer mode (top right).
+
+Click "Load unpacked" and select the reddit-masker/ folder.
+
+Navigate to Reddit. Your extension should now run on matching URLs like:
+
+    https://www.reddit.com/*
+
+    To debug: right-click the page → Inspect → Console/Elements → check if blur overlays are applied.
+
+🦊 For Firefox (Manual Install)
+
+    Open Firefox and go to:
+
+    about:debugging#/runtime/this-firefox
+
+    Click “Load Temporary Add-on”.
+
+    Select the manifest.json file from your reddit-masker/ folder.
+
+    Navigate to Reddit and test the extension.
+
+    Firefox doesn't persist temporary extensions between restarts. For permanent use, you’ll need to package and sign it via addons.mozilla.org (AMO).
