@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Unpoo Reddit",
+  "version": "1.0",
+  "description": "Masks Reddit posts/comments by users active in blocked subreddits.",
+  "permissions": ["scripting", "storage", "activeTab"],
+  "host_permissions": ["https://www.reddit.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["*://*.reddit.com/*"],
+      "js": ["content.js"],
+      "css": ["style.css"]
+    }
+  ],
+  "icons": {
+    "48": "icons/icon.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icons/icon.png"
+  }
+}
