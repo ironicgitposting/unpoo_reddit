@@ -1,34 +1,20 @@
-/* Blur + overlay for masked Reddit content */
 .masked-content {
   filter: blur(6px);
   position: relative;
-  transition: filter 0.3s ease;
 }
 
 .masked-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0, 0, 0, 0.6);
   color: white;
   font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
   pointer-events: none;
-  font-family: sans-serif;
+  z-index: 9999;
   text-align: center;
-  padding: 0 10px;
+  padding: 5px;
   border-radius: 6px;
-}
-
-/* Optional: on hover, reveal the masked content */
-.masked-content:hover {
-  filter: none;
-}
-.masked-content:hover .masked-overlay {
-  display: none;
 }
